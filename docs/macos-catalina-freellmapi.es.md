@@ -3,6 +3,9 @@
 Guía para instalar OpenDesign 0.22.1 en un Mac con macOS 10.15 Catalina y apuntarlo a
 [FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi) corriendo en `127.0.0.1:3001`.
 
+> Si tu Mac puede correr macOS 13.5+, lo que buscás es levantar el repo desde el código:
+> [`levantar-en-mac.es.md`](levantar-en-mac.es.md).
+
 ---
 
 ## 0. Resumen: qué es posible y qué no

@@ -5,6 +5,10 @@ en la LAN, para que el Mac con **macOS 10.15 Catalina** lo use desde el navegado
 (Chrome 128 o Safari 15.6). Opcionalmente levanta **FreeLLMAPI** en modo local como
 proveedor BYOK.
 
+> ¿Buscás levantar el repo en una Mac moderna (macOS 13.5+)? Está en
+> [`docs/levantar-en-mac.es.md`](../../docs/levantar-en-mac.es.md). Este kit es para servir
+> OpenDesign desde otra máquina a un Mac con Catalina.
+>
 > **Por qué no se instala directo en Catalina:** la app de escritorio usa Electron 41
 > (requiere macOS 12+) y el stack necesita Node 24 (binarios oficiales con target 13.5).
 > Ver `docs/macos-catalina-freellmapi.es.md` para el detalle y para la ruta nativa
@@ -127,6 +131,7 @@ instancia viva, y que `stop` **no mate un PID reciclado** que ya no es suyo.
 | `El web no respondió en 180s` | Revisá `pnpm tools-dev logs web`; el primer arranque necesita compilar |
 | FreeLLMAPI no arranca sin Docker | Necesita `better-sqlite3` compilado para tu Node (normalmente lo resuelve `npm install`) |
 | `401` en `/v1/models` | Es lo esperado sin la unified key; pegala en OpenDesign, no en `.env` |
+| El daemon no arranca: `TypeError: Invalid URL` (`origin-validation.ts`) | `OD_ALLOWED_ORIGINS` sólo acepta URLs (`http://ip:puerto`); los wildcards van en `OD_ALLOWED_DEV_ORIGINS` |
 | `No pude validar better-sqlite3` (aviso) | Sólo es informativo; si el daemon arranca, ignoralo |
 | `better-sqlite3 está compilado para otro Node` | Cambiaste de versión de Node: el script reconstruye solo (necesita red + Xcode CLT) |
 | FreeLLMAPI “no pudo cargar better-sqlite3” | npm no bajó el prebuilt (sin red/proxy): `npm install --force` en `~/freellmapi` o usá Docker |
