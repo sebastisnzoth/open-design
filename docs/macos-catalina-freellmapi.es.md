@@ -33,6 +33,11 @@ Ambas rutas se conectan igual a FreeLLMAPI (sección 3).
 La UI web es la misma que la del escritorio; sólo se necesita una máquina con
 Node 24 + pnpm 10.33.2 (otro Mac, una PC Linux, un servidor casero).
 
+> **Atajo listo para usar:** [`deploy/catalina/`](../deploy/catalina/README.es.md) tiene el
+> kit completo — `setup.sh` (instala, compila, detecta la IP de LAN y arranca), `status.sh`,
+> `stop.sh` y `freellmapi.sh` (gateway local). El paso a paso manual queda abajo como
+> referencia de qué hace cada cosa.
+
 **En la máquina servidor:**
 
 ```bash
