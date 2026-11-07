@@ -87,6 +87,17 @@ Después, en el dashboard (`http://127.0.0.1:3001`): cargá las keys de los free
 Si el servidor de OpenDesign no es el mismo que el de FreeLLMAPI, usá la IP de la máquina
 del gateway en Base URL y levantá FreeLLMAPI escuchando en esa interfaz.
 
+## Pruebas
+
+```bash
+./deploy/catalina/tests/smoke.sh                 # 27 casos rápidos, sin red
+./deploy/catalina/tests/smoke.sh --integration   # + arranque real en puertos alternos
+```
+
+Cubren: sintaxis, argumentos inválidos, Node < 24, puertos no numéricos o repetidos, IP de
+LAN inusable, puertos ocupados (falla en <1 s, no espera 3 min), idempotencia sobre una
+instancia viva, y que `stop` **no mate un PID reciclado** que ya no es suyo.
+
 ## Variables
 
 | Variable | Default | Uso |
@@ -116,3 +127,15 @@ del gateway en Base URL y levantá FreeLLMAPI escuchando en esa interfaz.
 | `El web no respondió en 180s` | Revisá `pnpm tools-dev logs web`; el primer arranque necesita compilar |
 | FreeLLMAPI no arranca sin Docker | Necesita `better-sqlite3` compilado para tu Node (normalmente lo resuelve `npm install`) |
 | `401` en `/v1/models` | Es lo esperado sin la unified key; pegala en OpenDesign, no en `.env` |
+| `No pude validar better-sqlite3` (aviso) | Sólo es informativo; si el daemon arranca, ignoralo |
+| `better-sqlite3 está compilado para otro Node` | Cambiaste de versión de Node: el script reconstruye solo (necesita red + Xcode CLT) |
+| FreeLLMAPI “no pudo cargar better-sqlite3” | npm no bajó el prebuilt (sin red/proxy): `npm install --force` en `~/freellmapi` o usá Docker |
+
+## Notas de seguridad
+
+- El daemon queda en `127.0.0.1`; **sólo** se expone el puerto web. Si no querés exponerlo
+  en la LAN, no uses este kit: `pnpm tools-dev start web` (sin `OD_HOST`) queda en loopback.
+- FreeLLMAPI puede quedar escuchando también en tu IP de LAN aunque `HOST=127.0.0.1`
+  (su proceso abre más de un listener). Verificá con `ss -lnt | grep 3001` / `lsof -i :3001`
+  y, si aparece la IP de LAN, bloqueá el puerto en el firewall.
+- Ninguno de los dos servicios tiene auth multi-tenant: no los expongas a internet.
